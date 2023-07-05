@@ -4,17 +4,20 @@ import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:walletwizard/screens/AddTransactionScreen.dart';
 import 'package:walletwizard/screens/homeScreen.dart';
-import 'package:walletwizard/screens/statiticsScreen.dart';
+import 'package:walletwizard/screens/statiticsScreen/statiticsScreen.dart';
 import 'package:walletwizard/screens/Transactionhistorypage/transactionHistory.dart';
 
-import '../screens/settingsScreen.dart';
+import '../screens/settings_Screen/settingsScreen.dart';
 
 
 
 class bottumNavigationpage extends StatefulWidget {
-  const bottumNavigationpage({
+  String username;
+   bottumNavigationpage(   {
     Key? key,
-  }) : super(key: key);
+    required this.username,
+  }) : super(key: key
+  );
 
   @override
   State<bottumNavigationpage> createState() => _AnimatedBarExampleState();
@@ -98,7 +101,7 @@ class _AnimatedBarExampleState extends State<bottumNavigationpage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddTransactionScreen()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddTransactionScreen(username: widget.username,)));
         },
         backgroundColor: Colors.white,
         child: Icon(
@@ -111,10 +114,10 @@ class _AnimatedBarExampleState extends State<bottumNavigationpage> {
         child: PageView(
           controller: controller,
            physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            homeScreen(),
+          children:  [
+            homeScreen(username: widget.username,),
             statiticsScreen(),
-            transactionHistoryScreen(),
+            transactionHistoryScreen(username: widget.username,),
             settingsScreen(),
           ],
         ),

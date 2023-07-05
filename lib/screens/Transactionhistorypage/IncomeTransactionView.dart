@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +9,9 @@ import '../../model/add_datamodel.dart';
 import '../editTransactionScreen.dart';
 
 class IncomeTransactionView extends StatefulWidget {
-  const IncomeTransactionView({super.key});
+  String username;
+  IncomeTransactionView({super.key,
+  required this.username});
 
   @override
   State<IncomeTransactionView> createState() => __IncomeTransactionViewStateState();
@@ -23,8 +24,10 @@ class __IncomeTransactionViewStateState extends State<IncomeTransactionView> {
       valueListenable: AddListNotifier,
       builder: (BuildContext ctx, List<add_dataModel> addList, Widget? child) {
          var IncomeList=addList.where((element) => element.moneytype=='Income',).toList();
-
-        return CustomScrollView(
+    
+        return (IncomeList.isEmpty)
+        ?  Image.asset('asset/notdataIcon/notDataIcon-removebg-preview.png') 
+        :CustomScrollView(
           slivers: [
              SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -39,9 +42,7 @@ class __IncomeTransactionViewStateState extends State<IncomeTransactionView> {
                       setState(() {
                         getAllTransactions();
                         data.delete();
-                        total();
-                        income();
-                        expense();
+                       IncomeAndExpence();
                       });
                      },
                      icon: Icons.delete,backgroundColor: Colors.red,
@@ -52,6 +53,7 @@ class __IncomeTransactionViewStateState extends State<IncomeTransactionView> {
                     onPressed: (indext){   
                        Navigator.of(context).push(MaterialPageRoute(builder:((context) => editTransactionScreen(
                         //  index_: index,
+                        username: widget.username,
                         id_: data.id,
                          amount_: data.Amount,
                          categoryItem_: data.CategoryItem,

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:walletwizard/model/add_datamodel.dart';
-import 'package:walletwizard/screens/homeScreen.dart';
-import 'package:walletwizard/screens/loginScreen.dart';
+import 'package:walletwizard/screens/SplashScreen.dart';
 
-import 'bottomNavigationBar/bottomNavigationBar.dart';
+ const SAVE_KEY_NAME='UserLoggedIn';
 
 Future<void> main() async{
  await Hive.initFlutter();
@@ -12,7 +11,7 @@ Future<void> main() async{
   Hive.registerAdapter(adddataModelAdapter());
  }
  await Hive.openBox<add_dataModel>('addList_db');
-  runApp(const MyApp());
+  runApp( const MyApp());
 }
 
 
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:bottumNavigationpage(),
+      home:SplashScreen(),
     );
   }
 }

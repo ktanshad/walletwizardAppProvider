@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:walletwizard/model/add_datamodel.dart';
 
+
+const transactionDBName= 'addList_db';
+
 ValueNotifier<List<add_dataModel>>AddListNotifier=ValueNotifier([]);
+
+
 
 Future<void> onTapTransactionAdd(add_dataModel value)async{
  
 
-   final addTransactionList_db=await Hive.openBox<add_dataModel>('addList_db');
+   final addTransactionList_db=await Hive.openBox<add_dataModel>(transactionDBName);
         await addTransactionList_db.put(value.id,value);
         getAllTransactions();
         //  AddListNotifier.value.add(value); 
@@ -19,7 +24,7 @@ Future<void> onTapTransactionAdd(add_dataModel value)async{
 
 
 Future<void>getAllTransactions() async{
-final addTransactionList_db=await Hive.openBox<add_dataModel>('addList_db');
+final addTransactionList_db=await Hive.openBox<add_dataModel>(transactionDBName);
 AddListNotifier.value.clear();
 AddListNotifier.value.addAll(addTransactionList_db.values);
     AddListNotifier.notifyListeners();
@@ -27,7 +32,7 @@ AddListNotifier.value.addAll(addTransactionList_db.values);
 
 
 Future<void>updateTransaction(add_dataModel update)async{
-  final addTransaction_db= await Hive.openBox<add_dataModel>('addList_db');
+  final addTransaction_db= await Hive.openBox<add_dataModel>(transactionDBName);
   addTransaction_db.put(update.id,update);
   // AddListNotifier.value[updation.id]=updation;
   AddListNotifier.notifyListeners();
@@ -38,9 +43,9 @@ Future<void>updateTransaction(add_dataModel update)async{
 
 
 //utility
-
+class IncomeAndExpence{
 int totals=0;
-final box=Hive.box<add_dataModel>('addList_db');
+final box=Hive.box<add_dataModel>(transactionDBName);
 int total(){
   var history2=box.values.toList();
   List a=[0,0];
@@ -79,3 +84,6 @@ int expense(){
   totals=a.reduce((value, element) => value+element);
   return totals;
 }
+
+}
+

@@ -1,16 +1,16 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:walletwizard/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:walletwizard/model/add_datamodel.dart';
-import 'package:walletwizard/screens/homeScreen.dart';
 
 import '../db/functions/db_functions.dart';
 
 
 class editTransactionScreen extends StatefulWidget {
     // int index_;
+    String username;
   String id_;
   var amount_;
   var explain_;
@@ -20,6 +20,7 @@ class editTransactionScreen extends StatefulWidget {
    editTransactionScreen({
     super.key,
   // required this.index_,
+  required this.username,
   required this.id_,
   required this.amount_,
   required this.explain_,
@@ -86,21 +87,21 @@ final List<String> _moneytypelist=[
         body: Container(
           
           height: 800,
-        decoration: BoxDecoration(gradient: LinearGradient(colors: [Color.fromARGB(255, 165, 143, 210),Color(0xffddc3fc), ],),),
+        decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color.fromARGB(255, 165, 143, 210),Color(0xffddc3fc), ],),),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Form(
             key:_formkey,
             child: Column(
               children: [
-                SizedBox(height: 30,),
+                const SizedBox(height: 30,),
                 Center(child: Text("Edit Transaction",style: GoogleFonts.ubuntu(color: Colors.white,fontSize: 30,fontWeight:FontWeight.bold),)),
-                 SizedBox(height: 30,),
+                 const SizedBox(height: 30,),
                   
                   
                  Container(
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 144, 106, 220),
+                      color: const Color.fromARGB(255, 144, 106, 220),
                     borderRadius: BorderRadiusDirectional.circular(30)),
                    height:size.height*0.6,
                    width: size.width*0.8,
@@ -112,7 +113,7 @@ final List<String> _moneytypelist=[
           
                         
                         Container(
-                         padding: EdgeInsets.symmetric(horizontal:15,vertical: 10),
+                         padding: const EdgeInsets.symmetric(horizontal:15,vertical: 10),
                          
                           width:size.width*0.6,
                           height: size.height*0.07,
@@ -131,8 +132,8 @@ final List<String> _moneytypelist=[
                   width: 40,
                   child: Image.asset('imagesMoneyType/$e.png'),
                 ),
-                SizedBox(width: 10,),
-                Text(e, style: TextStyle(fontSize: 18)),
+                const SizedBox(width: 10,),
+                Text(e, style: const TextStyle(fontSize: 18)),
               ],
             ),
                   ),
@@ -141,12 +142,12 @@ final List<String> _moneytypelist=[
                 selectedItemBuilder: (BuildContext context) =>
                 _moneytypelist.map((e) => Row(
                   children: [
-            Container(
+            SizedBox(
               width: 42,
               child: Image.asset('imagesMoneyType/$e.png'),
             ),
-            SizedBox(width: 10,),
-            Text(e, style: TextStyle(fontSize: 18)),
+            const SizedBox(width: 10,),
+            Text(e, style: const TextStyle(fontSize: 18)),
                   ],
                 )).toList(),
                 hint: Text(
@@ -172,7 +173,7 @@ final List<String> _moneytypelist=[
                   
                   
                         Container(
-                         padding: EdgeInsets.symmetric(horizontal:15,vertical: 10),
+                         padding: const EdgeInsets.symmetric(horizontal:15,vertical: 10),
                          
                           width:size.width*0.6,
                           height: size.height*0.07,
@@ -184,18 +185,16 @@ final List<String> _moneytypelist=[
                            child:DropdownButton<String>(
                           value:SelectedCategoryItem,
                           items:_categoryList.map((e) => DropdownMenuItem(
-                            child: Container(
-                             child: Row(
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    child: Image.asset('imagesCategory/${e}.png'),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text(e,style: TextStyle(fontSize: 18),)
-                                ],
-                              ),
-                            ),
+                            child: Row(
+                               children: [
+                                 Container(
+                                   width: 40,
+                                   child: Image.asset('imagesCategory/${e}.png'),
+                                 ),
+                                 const SizedBox(width: 10,),
+                                 Text(e,style: const TextStyle(fontSize: 18),)
+                               ],
+                             ),
                             value: e,)).toList(),
                             selectedItemBuilder: (BuildContext context)=>
                             _categoryList.map((e) => Row(
@@ -204,9 +203,9 @@ final List<String> _moneytypelist=[
                                     width: 42,
                                     child:Image.asset('imagesCategory/${e}.png'),
                                   ),
-                                  SizedBox(width: 10,),
+                                  const SizedBox(width: 10,),
           
-                                  Text(e,style: TextStyle(fontSize: 18),)
+                                  Text(e,style: const TextStyle(fontSize: 18),)
                                 ],
                               )).toList(),
                             
@@ -226,7 +225,7 @@ final List<String> _moneytypelist=[
                   
                   
                   
-                        Container(
+                        SizedBox(
                           width:size.width*0.6,
                           child: TextFormField(
                             controller: _AmountController,
@@ -257,7 +256,7 @@ final List<String> _moneytypelist=[
                   
                   
                   
-                        Container(
+                        SizedBox(
                           width:size.width*0.6,
                           child: TextFormField(
                             controller: _explainController,
@@ -295,7 +294,7 @@ final List<String> _moneytypelist=[
                         child: Center(
                           child: Row(
                             children: [
-                              SizedBox(width: 5,),
+                              const SizedBox(width: 5,),
                               TextButton(onPressed: ()async{
                                 DateTime? newDate =await showDatePicker(context: context, initialDate:date, firstDate:DateTime(2023), lastDate:DateTime(2100));
                                 if(newDate==Null)return;
@@ -303,7 +302,7 @@ final List<String> _moneytypelist=[
                                   date=newDate!;
                                 });
                               },
-                               child:Text('Date:${date.day}/${date.month}/ ${date.year}',style: TextStyle(color:Colors.black),),),
+                               child:Text('Date:${date.day}/${date.month}/ ${date.year}',style: const TextStyle(color:Colors.black),),),
                             ],
                           ),
                         ),
@@ -315,7 +314,7 @@ final List<String> _moneytypelist=[
                    ),
                   ),
           
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -329,8 +328,8 @@ final List<String> _moneytypelist=[
                       },
                       
                         style: ButtonStyle(
-                         backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 144, 106, 220)),
-                         minimumSize: MaterialStateProperty.all<Size>(Size(150, 50)),
+                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 144, 106, 220)),
+                         minimumSize: MaterialStateProperty.all<Size>(const Size(150, 50)),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                              RoundedRectangleBorder( borderRadius: BorderRadius.circular(30),
                              side: BorderSide.none),
@@ -379,7 +378,7 @@ final List<String> _moneytypelist=[
     }
      if(_formkey.currentState!.validate()){
     final updation=add_dataModel(_moneytype, _categoryItem, _Amount, _explain,_date,_id);
-      Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>bottumNavigationpage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>bottumNavigationpage(username: widget.username,)));
     updateTransaction( updation);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.green,

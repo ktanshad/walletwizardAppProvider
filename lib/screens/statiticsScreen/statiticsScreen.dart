@@ -1,8 +1,15 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:walletwizard/db/functions/db_functions.dart';
+import 'package:walletwizard/screens/statiticsScreen/pichartAll.dart';
+import 'package:walletwizard/screens/statiticsScreen/pichartExpense.dart';
+import 'package:walletwizard/screens/statiticsScreen/pichartIncome.dart';
+
+import '../../model/add_datamodel.dart';
+
+ValueNotifier<List<add_dataModel>>graphNotifier=ValueNotifier([]);
 
 class statiticsScreen extends StatefulWidget {
   const statiticsScreen({super.key});
@@ -14,14 +21,22 @@ class statiticsScreen extends StatefulWidget {
 class _statiticsScreenState extends State<statiticsScreen> {
  String dateFilterTitle = "All";
 
+ @override
+  void initState() {
+    super.initState();
+    graphNotifier.value=AddListNotifier.value;
+  }
+
+  
   @override
   Widget build(BuildContext context) {
+     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Center(child: Text('Statitics',style:GoogleFonts.ubuntu(fontSize: 20,fontWeight: FontWeight.bold,))),
            flexibleSpace: Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
             Color(0xffa58fd2),
@@ -37,7 +52,7 @@ class _statiticsScreenState extends State<statiticsScreen> {
           
           body: Column(
             children: [
-              SizedBox(height: 20,),
+              SizedBox(height: size.height*0.02,),
 
                 Padding(
             padding: const EdgeInsets.all(10.0),
@@ -78,12 +93,12 @@ class _statiticsScreenState extends State<statiticsScreen> {
                   ),
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      // value: 1,
+                      value: 1,
                       child: const Text(
                         "All",
                       ),
                       onTap: () {
-                    
+                      graphNotifier.value=AddListNotifier.value;
 
 
                         setState(() {
@@ -92,65 +107,46 @@ class _statiticsScreenState extends State<statiticsScreen> {
                       },
                     ),
                     PopupMenuItem(
-                      // value: 2,
+                      value: 2,
                       child: const Text(
                         "Today",
                       ),
                       onTap: () {
-                       
+                       graphNotifier.value=AddListNotifier.value.where((element) => 
+                       element.dateTime.day==DateTime.now().day &&
+                       element.dateTime.year==DateTime.now().year ,).toList();
 
-
-
-
-
-
-
-
-
-                        setState(() {
+                          setState(() {
                           dateFilterTitle = "Today";
                         });
                       },
                     ),
                     PopupMenuItem(
-                      // value: 2,
+                      value: 2,
                       child: const Text(
                         "Yesterday",
                       ),
                       onTap: () {
+                      graphNotifier.value=AddListNotifier.value.where((element) => 
+                      element.dateTime.day==DateTime.now().day-1 &&
+                      element.dateTime.month==DateTime.now().month &&
+                      element.dateTime.year==DateTime.now().year,).toList();
                         
-                        
-
-
-
-
-
-
-
                         setState(() {
                           dateFilterTitle = "Yesterday";
                         });
                       },
                     ),
                     PopupMenuItem(
-                      // value: 2,
+                      value: 2,
                       child: const Text(
                         "Month",
                       ),
                       onTap: () {
-                   
-                   
-
-
-
-
-
-
-
-
-
-
-                        setState(() {
+                       graphNotifier.value=AddListNotifier.value.where((element) => 
+                       element.dateTime.month==DateTime.now().month &&
+                       element.dateTime.year==DateTime.now().year,).toList();
+                    setState(() {
                           dateFilterTitle = "Month";
                         });
                       },
@@ -161,7 +157,7 @@ class _statiticsScreenState extends State<statiticsScreen> {
             ),
           ),
 
-              SizedBox(height: 20,),
+              SizedBox(height: size.height*0.02,),
              
              Expanded(child: DefaultTabController(
                 length: 3,
@@ -172,9 +168,9 @@ class _statiticsScreenState extends State<statiticsScreen> {
                     alignment: Alignment.center,
                     width: double.infinity,
                     child:ButtonsTabBar(
-                      backgroundColor: Color(0xffa58fd2),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 40),
-                      tabs:[
+                      backgroundColor: const Color(0xffa58fd2),
+                      contentPadding: EdgeInsets.symmetric(horizontal:size.width*0.1),
+                      tabs:const [
                         Tab(
                           iconMargin: EdgeInsets.all(30),
                           text: 'All',
@@ -191,9 +187,9 @@ class _statiticsScreenState extends State<statiticsScreen> {
                       ),
                   ),
                   Expanded(child: TabBarView(children: [
-                    Text('All'),
-                    Text('Income'),
-                 Text('Expense'),
+                    pichartAll(),
+                    const pichartIncome(),
+                     const pichartExpense(),
                   ]))
                  ],
 

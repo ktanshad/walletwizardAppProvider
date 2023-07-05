@@ -11,6 +11,9 @@ import '../../model/add_datamodel.dart';
 import '../editTransactionScreen.dart';
 
 class Search extends SearchDelegate{
+   final String username;
+
+   Search({required this.username});
 
   
   @override
@@ -41,13 +44,21 @@ class Search extends SearchDelegate{
    return  ValueListenableBuilder(
       valueListenable: AddListNotifier,
       builder: (BuildContext ctx, List<add_dataModel> addList, Widget? child) {
-        return CustomScrollView(
+        return (addList.isEmpty)
+        ? const Center(
+            child: Text('No data found'),
+        )
+        :CustomScrollView(
           slivers: [
              SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
                 final data = addList.reversed.toList()[index];
-                if(data.explain.toLowerCase().contains(query.toLowerCase()) ||data.Amount.toLowerCase().contains(query.toLowerCase())){
+                if(data.explain.toLowerCase().contains(query.toLowerCase()) 
+                ||data.Amount.toLowerCase().contains(query.toLowerCase())
+                || data.moneytype.toLowerCase().contains(query.toLowerCase())
+                || data.CategoryItem.toLowerCase().contains(query.toLowerCase())      
+                ){
                     return Slidable(
                 endActionPane: ActionPane(
                   motion: const BehindMotion(),
@@ -70,6 +81,7 @@ class Search extends SearchDelegate{
                     onPressed: (indext){   
                        Navigator.of(context).push(MaterialPageRoute(builder:((context) => editTransactionScreen(
                         //  index_: index,
+                        username:username,
                         id_: data.id,
                          amount_: data.Amount,
                          categoryItem_: data.CategoryItem,
@@ -142,13 +154,19 @@ class Search extends SearchDelegate{
         return  ValueListenableBuilder(
       valueListenable: AddListNotifier,
       builder: (BuildContext ctx, List<add_dataModel> addList, Widget? child) {
-        return CustomScrollView(
+        return (addList.isEmpty)
+        ? Center(child: Image.asset('asset/notdataIcon/notDataIcon-removebg-preview.png'))
+        :CustomScrollView(
           slivers: [
              SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
                 final data = addList.reversed.toList()[index];
-                if(data.explain.toLowerCase().contains(query.toLowerCase())|| data.Amount.toLowerCase().contains(query.toLowerCase())){
+                if(data.explain.toLowerCase().contains(query.toLowerCase()) 
+                || data.Amount.toLowerCase().contains(query.toLowerCase())
+                || data.moneytype.toLowerCase().contains(query.toLowerCase())
+                || data.CategoryItem.toLowerCase().contains(query.toLowerCase())
+                ){
                     return Slidable(
                 endActionPane: ActionPane(
                   motion: const BehindMotion(),
@@ -171,6 +189,7 @@ class Search extends SearchDelegate{
                     onPressed: (indext){   
                        Navigator.of(context).push(MaterialPageRoute(builder:((context) => editTransactionScreen(
                         //  index_: index,
+                        username: username,
                         id_: data.id,
                          amount_: data.Amount,
                          categoryItem_: data.CategoryItem,
@@ -224,7 +243,6 @@ class Search extends SearchDelegate{
                 ),
               );
                 }else{
-                   const Text('no data found');
                 return const SizedBox();
                 }
             

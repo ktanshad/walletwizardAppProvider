@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,7 +9,9 @@ import '../../model/add_datamodel.dart';
 import '../editTransactionScreen.dart';
 
 class AllTransactionView extends StatefulWidget {
-  const AllTransactionView({super.key});
+  String username;
+  AllTransactionView({super.key,
+  required this.username});
 
   @override
   State<AllTransactionView> createState() => _AllTransactionViewState();
@@ -21,7 +23,9 @@ class _AllTransactionViewState extends State<AllTransactionView> {
     return  ValueListenableBuilder(
       valueListenable: AddListNotifier,
       builder: (BuildContext ctx, List<add_dataModel> addList, Widget? child) {
-        return CustomScrollView(
+        return (addList.isEmpty)
+        ? Image.asset('asset/notdataIcon/notDataIcon-removebg-preview.png'):
+         CustomScrollView(
           slivers: [
              SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -36,9 +40,7 @@ class _AllTransactionViewState extends State<AllTransactionView> {
                       setState(() {
                         getAllTransactions();
                         data.delete();
-                        total();
-                        income();
-                        expense();
+                        IncomeAndExpence();
                       });
                      },
                      icon: Icons.delete,backgroundColor: Colors.red,
@@ -49,6 +51,7 @@ class _AllTransactionViewState extends State<AllTransactionView> {
                     onPressed: (indext){   
                        Navigator.of(context).push(MaterialPageRoute(builder:((context) => editTransactionScreen(
                         //  index_: index,
+                        username: widget.username,
                         id_: data.id,
                          amount_: data.Amount,
                          categoryItem_: data.CategoryItem,

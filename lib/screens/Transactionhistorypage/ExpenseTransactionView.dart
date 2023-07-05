@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +9,9 @@ import '../../model/add_datamodel.dart';
 import '../editTransactionScreen.dart';
 
 class ExpenseTransactionView extends StatefulWidget {
-  const ExpenseTransactionView({super.key});
+  String username;
+  ExpenseTransactionView({super.key,
+  required this.username});
 
   @override
   State<ExpenseTransactionView> createState() => _ExpenseTransactionViewState();
@@ -24,7 +25,9 @@ class _ExpenseTransactionViewState extends State<ExpenseTransactionView> {
       builder: (BuildContext ctx, List<add_dataModel> addList, Widget? child) {
          var ExpenseList=addList.where((element) => element.moneytype=='Expense',).toList();
 
-        return CustomScrollView(
+        return (ExpenseList.isEmpty)
+        ? Image.asset('asset/notdataIcon/notDataIcon-removebg-preview.png')
+        :CustomScrollView(
           slivers: [
              SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -39,9 +42,7 @@ class _ExpenseTransactionViewState extends State<ExpenseTransactionView> {
                       setState(() {
                         getAllTransactions();
                         data.delete();
-                        total();
-                        income();
-                        expense();
+                        IncomeAndExpence();
                       });
                      },
                      icon: Icons.delete,backgroundColor: Colors.red,
@@ -52,6 +53,7 @@ class _ExpenseTransactionViewState extends State<ExpenseTransactionView> {
                     onPressed: (indext){   
                        Navigator.of(context).push(MaterialPageRoute(builder:((context) => editTransactionScreen(
                         //  index_: index,
+                        username: widget.username,
                         id_: data.id,
                          amount_: data.Amount,
                          categoryItem_: data.CategoryItem,
