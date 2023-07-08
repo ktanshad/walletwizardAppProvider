@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:walletwizard/bottomNavigationBar/bottomNavigationBar.dart';
 import 'package:walletwizard/model/add_datamodel.dart';
+import 'package:walletwizard/screens/Transactionhistorypage/transactionHistory.dart';
 
 import '../db/functions/db_functions.dart';
 
@@ -378,7 +379,7 @@ final List<String> _moneytypelist=[
     }
      if(_formkey.currentState!.validate()){
     final updation=add_dataModel(_moneytype, _categoryItem, _Amount, _explain,_date,_id);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>bottumNavigationpage(username: widget.username,)));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>transactionHistoryScreen(username: widget.username,)));
     updateTransaction( updation);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.green,
