@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:walletwizard/controller/provider/addTransactionProvider.dart';
+import 'package:walletwizard/controller/provider/dbFunctionsProvider.dart';
+import 'package:walletwizard/controller/provider/statiticsProvider.dart';
+import 'package:walletwizard/controller/provider/utilityProvider.dart';
+import 'package:walletwizard/view/splashScreen/splashScreen.dart';
 import 'package:walletwizard/model/add_datamodel.dart';
-import 'package:walletwizard/screens/SplashScreen.dart';
+
 
  const SAVE_KEY_NAME='UserLoggedIn';
 
@@ -22,13 +28,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+         ChangeNotifierProvider(
+          create:(BuildContext context) =>addTransactionDropDownProvider(), 
+          ),
+
+            ChangeNotifierProvider(
+          create:(BuildContext context) =>statiticsDropDownProvider (), 
+          ),
+
+               ChangeNotifierProvider(
+          create:(BuildContext context) =>DbFunctionProvider(), 
+          ),
+
+               ChangeNotifierProvider(
+          create:(BuildContext context) =>UtilityProvider(), 
+          ),
+
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home:SplashScreen(),
       ),
-      home:SplashScreen(),
     );
   }
 }
